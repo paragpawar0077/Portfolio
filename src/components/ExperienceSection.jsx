@@ -10,7 +10,7 @@ export default function ExperienceSection() {
   return (
     <section id="experience" className="max-w-4xl mx-auto px-6 py-20">
       <SectionKicker label="Experience" />
-      <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-10">
+      <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-10 font-display">
         Work &amp; internships
       </h2>
 

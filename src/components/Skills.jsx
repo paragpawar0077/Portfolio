@@ -6,7 +6,7 @@ export default function Skills() {
   return (
     <section id="skills" className="max-w-6xl mx-auto px-6 py-20">
       <SectionKicker label="Toolbox" />
-      <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-10">Skills</h2>
+      <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-10 font-display">Skills</h2>
 
       <div className="grid md:grid-cols-3 gap-8">
         {/* Skill categories — data/skills.js */}

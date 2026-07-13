@@ -22,7 +22,7 @@ export default function Contact() {
   return (
     <section id="contact" className="max-w-6xl mx-auto px-6 py-20">
       <SectionKicker label="Get in touch" />
-      <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-10">
+      <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-10 font-display">
         Let's build something.
       </h2>
 

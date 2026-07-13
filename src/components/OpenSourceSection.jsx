@@ -10,7 +10,7 @@ export default function OpenSourceSection() {
   return (
     <section id="open-source" className="max-w-6xl mx-auto px-6 py-20">
       <SectionKicker label="Open source" />
-      <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-10">Contributions</h2>
+      <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-10 font-display">Contributions</h2>
 
       <div className="space-y-4">
         {openSourceContributions.map((c, i) => (

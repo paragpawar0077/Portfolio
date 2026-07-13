@@ -6,7 +6,7 @@ export default function About() {
   return (
     <section id="about" className="max-w-4xl mx-auto px-6 py-20">
       <SectionKicker label="About" />
-      <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-6">
+      <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-6 font-display">
         A little about my background
       </h2>
 

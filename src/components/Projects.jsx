@@ -8,7 +8,7 @@ export default function Projects() {
   return (
     <section id="projects" className="max-w-6xl mx-auto px-6 py-20">
       <SectionKicker label="Selected work" />
-      <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-2">Projects</h2>
+      <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-2 font-display">Projects</h2>
       <p className="text-slate-500 dark:text-slate-400 mb-10 max-w-xl">
         {/* EDIT: short section intro */}
         A mix of RAG/LLM systems and applied ML — replace the placeholders in

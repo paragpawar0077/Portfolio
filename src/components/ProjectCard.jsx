@@ -27,7 +27,7 @@ export default function ProjectCard({ project, featured = false }) {
       </div>
 
       <div className="p-6 flex flex-col gap-4 flex-1">
-        <h3 className="font-semibold text-lg text-slate-900 dark:text-white">{name}</h3>
+        <h3 className="font-semibold text-lg text-slate-900 dark:text-white font-display">{name}</h3>
         <p className="text-sm text-slate-600 dark:text-slate-300">{description}</p>
 
         <div className="flex flex-wrap gap-2">

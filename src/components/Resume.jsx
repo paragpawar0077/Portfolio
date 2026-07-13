@@ -8,7 +8,7 @@ export default function Resume() {
         <p className="font-mono text-xs uppercase tracking-widest text-cyan-600 dark:text-cyan-400 mb-3">
           Résumé
         </p>
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">Want the full picture?</h2>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-3 font-display">Want the full picture?</h2>
         <p className="text-slate-600 dark:text-slate-300 mb-6">
           Download my up-to-date résumé — PDF, one page.
         </p>

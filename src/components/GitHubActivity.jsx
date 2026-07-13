@@ -13,6 +13,7 @@ const USERNAME = profile.github.replace(/\/$/, "").split("/").pop();
 export default function GitHubActivity() {
   const [user, setUser] = useState(null);
   const [repos, setRepos] = useState([]);
+  const [contributions, setContributions] = useState(null);
   const [status, setStatus] = useState("loading"); // loading | ready | error
 
   useEffect(() => {
@@ -20,24 +21,35 @@ export default function GitHubActivity() {
 
     async function load() {
       try {
-        const [userRes, reposRes] = await Promise.all([
+        const [userRes, reposRes, contribsRes] = await Promise.all([
           fetch(`https://api.github.com/users/${USERNAME}`),
           fetch(`https://api.github.com/users/${USERNAME}/repos?sort=updated&per_page=6`),
+          fetch(`https://github-contributions-api.jogruber.de/v4/${USERNAME}`).catch(() => null),
         ]);
 
         if (!userRes.ok || !reposRes.ok) throw new Error("GitHub API request failed");
 
         const userData = await userRes.json();
         const reposData = await reposRes.json();
+        let contribsCount = null;
+
+        if (contribsRes && contribsRes.ok) {
+          try {
+            const contribsData = await contribsRes.json();
+            const currentYear = new Date().getFullYear();
+            contribsCount = contribsData?.total?.[currentYear] || contribsData?.total?.[currentYear.toString()] || 0;
+          } catch (e) {
+            console.error("Error parsing contributions:", e);
+          }
+        }
 
         if (!cancelled) {
           setUser(userData);
           setRepos(Array.isArray(reposData) ? reposData : []);
+          setContributions(contribsCount !== null ? contribsCount : "-");
           setStatus("ready");
         }
       } catch (err) {
-        // Most common cause: GitHub's unauthenticated rate limit (60/hr per
-        // IP) has been hit. Fail quietly rather than showing a broken widget.
         if (!cancelled) setStatus("error");
       }
     }
@@ -55,7 +67,7 @@ export default function GitHubActivity() {
   return (
     <section id="github-activity" className="max-w-6xl mx-auto px-6 py-20">
       <SectionKicker label="Live from GitHub" />
-      <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-2">
+      <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-2 font-display">
         GitHub activity
       </h2>
       <p className="text-slate-500 dark:text-slate-400 mb-10 max-w-xl">
@@ -63,16 +75,14 @@ export default function GitHubActivity() {
       </p>
 
       {/* Stat tiles */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
-        <StatTile label="Followers" value={status === "ready" ? user.followers : null} />
-        <StatTile label="Public repos" value={status === "ready" ? user.public_repos : null} />
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10 max-w-2xl">
         <StatTile
-          label="Following"
-          value={status === "ready" ? user.following : null}
+          label="Contributions this year"
+          value={status === "ready" ? contributions : null}
         />
         <StatTile
-          label="Member since"
-          value={status === "ready" ? new Date(user.created_at).getFullYear() : null}
+          label="Public repos"
+          value={status === "ready" ? user.public_repos : null}
         />
       </div>
 
