@@ -26,24 +26,20 @@ export default function App() {
 
       <Hero />
       <About />
+      <ExperienceSection />
       <Projects />
       <Skills />
       <GitHubActivity />
 
       {/* --------------------------------------------------------------
-          OPTIONAL SECTIONS (Open Source, Experience)
+          OPTIONAL SECTIONS (Open Source)
 
-          Both components already auto-hide themselves (return null)
-          when their data file is an empty array — see
-          data/openSource.js and data/experience.js — so leaving them
-          here is safe even with no content yet.
+          OpenSourceSection already auto-hides itself (returns null)
+          when its data file is an empty array — see data/openSource.js.
 
-          To remove either one completely: delete its import above and
-          its single JSX line below. Nothing else in the page depends
-          on them, so removing them won't break spacing or layout.
+          To remove it completely: delete its import above and its single JSX line below.
       --------------------------------------------------------------- */}
       <OpenSourceSection />
-      <ExperienceSection />
 
       <Resume />
       <Contact />
