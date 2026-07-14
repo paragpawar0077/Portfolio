@@ -14,6 +14,8 @@ export default function GitHubActivity() {
   const [user, setUser] = useState(null);
   const [repos, setRepos] = useState([]);
   const [contributions, setContributions] = useState(null);
+  const [prCount, setPRCount] = useState(null);
+  const [osCount, setOSCount] = useState(null);
   const [status, setStatus] = useState("loading"); // loading | ready | error
 
   useEffect(() => {
@@ -21,10 +23,12 @@ export default function GitHubActivity() {
 
     async function load() {
       try {
-        const [userRes, reposRes, contribsRes] = await Promise.all([
+        const [userRes, reposRes, contribsRes, prRes, osRes] = await Promise.all([
           fetch(`https://api.github.com/users/${USERNAME}`),
           fetch(`https://api.github.com/users/${USERNAME}/repos?sort=updated&per_page=6`),
           fetch(`https://github-contributions-api.jogruber.de/v4/${USERNAME}`).catch(() => null),
+          fetch(`https://api.github.com/search/issues?q=author:${USERNAME}+type:pr`).catch(() => null),
+          fetch(`https://api.github.com/search/issues?q=author:${USERNAME}+type:pr+-user:${USERNAME}`).catch(() => null),
         ]);
 
         if (!userRes.ok || !reposRes.ok) throw new Error("GitHub API request failed");
@@ -32,6 +36,8 @@ export default function GitHubActivity() {
         const userData = await userRes.json();
         const reposData = await reposRes.json();
         let contribsCount = null;
+        let pullCount = null;
+        let openSourceCount = null;
 
         if (contribsRes && contribsRes.ok) {
           try {
@@ -43,10 +49,30 @@ export default function GitHubActivity() {
           }
         }
 
+        if (prRes && prRes.ok) {
+          try {
+            const prData = await prRes.json();
+            pullCount = prData.total_count;
+          } catch (e) {
+            console.error("Error parsing PR count:", e);
+          }
+        }
+
+        if (osRes && osRes.ok) {
+          try {
+            const osData = await osRes.json();
+            openSourceCount = osData.total_count;
+          } catch (e) {
+            console.error("Error parsing OS count:", e);
+          }
+        }
+
         if (!cancelled) {
           setUser(userData);
           setRepos(Array.isArray(reposData) ? reposData : []);
           setContributions(contribsCount !== null ? contribsCount : "-");
+          setPRCount(pullCount !== null ? pullCount : "-");
+          setOSCount(openSourceCount !== null ? openSourceCount : "-");
           setStatus("ready");
         }
       } catch (err) {
@@ -75,14 +101,26 @@ export default function GitHubActivity() {
       </p>
 
       {/* Stat tiles */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10 max-w-2xl">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
         <StatTile
           label="Contributions this year"
           value={status === "ready" ? contributions : null}
+          href={`https://github.com/${USERNAME}`}
         />
         <StatTile
           label="Public repos"
           value={status === "ready" ? user.public_repos : null}
+          href={`https://github.com/${USERNAME}?tab=repositories`}
+        />
+        <StatTile
+          label="Pull requests"
+          value={status === "ready" ? prCount : null}
+          href={`https://github.com/pulls?q=is:pr+author:${USERNAME}+is:merged`}
+        />
+        <StatTile
+          label="Open source"
+          value={status === "ready" ? osCount : null}
+          href={`https://github.com/pulls?q=is:pr+author:${USERNAME}+-user:${USERNAME}+is:merged`}
         />
       </div>
 
@@ -123,9 +161,9 @@ export default function GitHubActivity() {
   );
 }
 
-function StatTile({ label, value }) {
-  return (
-    <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-5 text-center">
+function StatTile({ label, value, href }) {
+  const content = (
+    <>
       <p className="text-2xl font-bold text-slate-900 dark:text-white font-mono">
         {value === null || value === undefined ? (
           <span className="inline-block w-8 h-6 bg-slate-200 dark:bg-slate-800 rounded animate-pulse" />
@@ -134,8 +172,22 @@ function StatTile({ label, value }) {
         )}
       </p>
       <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{label}</p>
-    </div>
+    </>
   );
+
+  const classes = `rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-5 text-center transition-all duration-200 block ${
+    href ? "hover:border-cyan-500 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-500/5 cursor-pointer" : ""
+  }`;
+
+  if (href) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" className={classes}>
+        {content}
+      </a>
+    );
+  }
+
+  return <div className={classes}>{content}</div>;
 }
 
 function RepoSkeleton() {
