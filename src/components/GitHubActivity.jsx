@@ -27,8 +27,8 @@ export default function GitHubActivity() {
           fetch(`https://api.github.com/users/${USERNAME}`),
           fetch(`https://api.github.com/users/${USERNAME}/repos?sort=updated&per_page=6`),
           fetch(`https://github-contributions-api.jogruber.de/v4/${USERNAME}`).catch(() => null),
-          fetch(`https://api.github.com/search/issues?q=author:${USERNAME}+type:pr`).catch(() => null),
-          fetch(`https://api.github.com/search/issues?q=author:${USERNAME}+type:pr+-user:${USERNAME}`).catch(() => null),
+          fetch(`https://api.github.com/search/issues?q=author:${USERNAME}+type:pr+is:merged`).catch(() => null),
+          fetch(`https://api.github.com/search/issues?q=author:${USERNAME}+type:pr+-user:${USERNAME}+is:merged`).catch(() => null),
         ]);
 
         if (!userRes.ok || !reposRes.ok) throw new Error("GitHub API request failed");
