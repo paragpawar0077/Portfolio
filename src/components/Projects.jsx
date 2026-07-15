@@ -6,19 +6,25 @@ import SectionKicker from "./SectionKicker";
 // edit that file to swap in real projects; this component just lays them out.
 export default function Projects() {
   return (
-    <section id="projects" className="max-w-6xl mx-auto px-6 py-20">
-      <SectionKicker label="Selected work" />
-      <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-2 font-display">Projects</h2>
-      <p className="text-slate-500 dark:text-slate-400 mb-10 max-w-xl">
-        {/* EDIT: short section intro */}
-        A mix of RAG/LLM systems and applied ML — replace the placeholders in
-        data/projects.js with your real work.
-      </p>
+    <section id="projects" className="relative max-w-6xl mx-auto px-6 py-24">
+      {/* Subtle background glow */}
+      <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[50rem] h-[30rem] rounded-full bg-gradient-to-b from-cyan-500/5 to-transparent blur-3xl" />
 
-      <div className="grid sm:grid-cols-2 gap-6">
-        {projects.map((p, i) => (
-          <ProjectCard key={p.id} project={p} featured={i === 0} />
-        ))}
+      <div className="relative">
+        <SectionKicker label="Selected work" />
+        <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-3 font-display">
+          Projects
+        </h2>
+        <p className="text-slate-500 dark:text-slate-400 mb-12 max-w-xl text-base leading-relaxed">
+          RAG/LLM systems, ML models, and data analysis —{" "}
+          <span className="text-gradient font-medium">end-to-end, from raw data to results.</span>
+        </p>
+
+        <div className="grid sm:grid-cols-2 gap-6">
+          {projects.map((p, i) => (
+            <ProjectCard key={p.id} project={p} featured={i === 0} />
+          ))}
+        </div>
       </div>
     </section>
   );
