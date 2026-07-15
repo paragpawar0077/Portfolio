@@ -63,4 +63,16 @@ export const projects = [
     videoUrl: null,
     githubLink: "https://github.com/paragpawar0077/Customer-churn-prediction",
   },
+  {
+    id: 5,
+    category: "general",
+    name: "E-Commerce Sales Analysis",
+    description:
+      "End-to-end analytics pipeline analyzing 100,000+ Brazilian e-commerce orders. Covers automated Python data cleaning, database creation, multi-table JOINs, and complex PostgreSQL querying.",
+    stack: ["Python", "PostgreSQL", "Power BI", "Pandas"],
+    outcome: "Cleaned 112K transaction records; authored 10 production-style SQL queries (CTEs, Window Functions) to track sales trends, customer density, and logistics delay hotspots.",
+    demoLink: null,
+    videoUrl: null,
+    githubLink: "https://github.com/paragpawar0077/E-Commerce-Sales-Analysis",
+  },
 ];
